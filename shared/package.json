@@ -1,0 +1,20 @@
+{
+  "name": "@job-service/shared",
+  "version": "1.0.0",
+  "description": "Shared info between apps",
+  "main": "src/index.ts",
+  "type": "module",
+  "dependencies": {
+    "dotenv-mono": "^1.5.1",
+    "mongoose": "^9.2.1",
+    "redis": "^5.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Olawale Mayor",
+  "license": "ISC"
+}

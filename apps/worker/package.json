@@ -1,0 +1,16 @@
+{
+  "name": "@job-service/worker",
+  "version": "1.0.0",
+  "description": "Worker for job service",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts"
+  },
+  "author": "Olawale Mayor",
+  "license": "ISC",
+  "dependencies": {
+    "@job-service/shared": "^1.0.0",
+    "mongoose": "^9.2.1"
+  }
+}
