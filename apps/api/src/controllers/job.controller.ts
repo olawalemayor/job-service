@@ -1,11 +1,12 @@
 import { RequestHandler } from "express";
-import { IJob, jobValidationSchema } from "../models/job";
+import { jobValidationSchema } from "../models/job";
 import { JobModel } from "../schemas/job.schema";
+import { Job } from "../interfaces/job.interface";
 
 export const createJob: RequestHandler<
   null,
   { jobId: string } | { message: string },
-  Omit<IJob, "status">
+  Omit<Job, "status">
 > = async (req, res) => {
   try {
     const { error, value } = await jobValidationSchema.validate(req.body);
@@ -24,7 +25,7 @@ export const createJob: RequestHandler<
 
 export const getAllJobs: RequestHandler<
   null,
-  IJob[] | { message: string }
+  Job[] | { message: string }
 > = async (req, res) => {
   try {
     const allJobs = await JobModel.find();
@@ -37,7 +38,7 @@ export const getAllJobs: RequestHandler<
 
 export const getJobStatus: RequestHandler<
   { id: string },
-  { status: IJob["status"] } | { message: string }
+  { status: Job["status"] } | { message: string }
 > = async (req, res) => {
   try {
     const specifiedJob = await JobModel.findById(req.params.id);
@@ -53,7 +54,7 @@ export const getJobStatus: RequestHandler<
 
 export const deleteJob: RequestHandler<
   { id: string },
-  IJob | { message: string }
+  Job | { message: string }
 > = async (req, res) => {
   try {
     const specifiedJob = await JobModel.findById(req.params.id);

@@ -1,5 +1,5 @@
-import { Job } from "@job-service/shared";
 import Joi from "joi";
+import { Job } from "../interfaces/job.interface";
 
 export const jobValidationSchema = Joi.object<Job>({
   type: Joi.string().required().valid("email", "report", "image-processing"),

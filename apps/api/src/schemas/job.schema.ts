@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
-import { redisClient, Job } from "@job-service/shared";
+import { Job } from "../interfaces/job.interface";
+import { redisClient } from "../shared/redis-cllient";
 
 const jobSchema = new Schema<Job>(
   {

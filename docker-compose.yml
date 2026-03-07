@@ -1,0 +1,29 @@
+services:
+  redis:
+    image: redis:7.4-alpine
+    restart: always
+  
+  db:
+    image: mongo
+    restart: always
+
+  api:
+    build: ./apps/api
+    ports:
+      - "6500:6500"
+    depends_on:
+      - redis
+      - db
+    environment:
+      - PORT=6500
+      - REDIS_URL=redis://redis:6379
+      - MONGO_URL=mongodb://db:27017/job-service
+
+  worker:
+    build: ./apps/worker 
+    depends_on:
+      - redis
+      - db
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - MONGO_URL=mongodb://db:27017/job-service

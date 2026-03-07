@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { Job } from "@job-service/shared";
+import { Job } from "../interfaces/job.interface";
 
 const jobSchema = new Schema<Job>({
   type: {

@@ -1,8 +1,24 @@
-import { redisClient, connectToDb } from "@job-service/shared";
 import { JobModel } from "./schemas/job.schema";
 import { emailProcessor } from "./proccessors/email-processor";
 import { imageProccessor } from "./proccessors/image-proccessor";
 import { reportProccessor } from "./proccessors/report-proccessor";
+import { createClient } from "redis";
+import mongoose from "mongoose";
+import config from "./config";
+
+const redisClient = createClient({ url: config.redisUrl });
+
+redisClient.on("error", (err) => console.log("Redis Client Error", err));
+
+const connectToDb = async () => {
+  try {
+    await mongoose.connect(config.mongoUrl);
+    console.log("Database connected successfully");
+  } catch (error) {
+    console.error("Database connection error:", error);
+    process.exit(1);
+  }
+};
 
 async function startWorker() {
   await redisClient.connect();
