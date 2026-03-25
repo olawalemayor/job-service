@@ -1,4 +1,4 @@
-name: Step Types
+name: Multiple greets
 
 on:
     workflow_dispatch:
@@ -7,7 +7,7 @@ jobs:
     say-hello-inline-bash:
         runs-on: ubuntu-24.04
         steps:
-            - run: echo "Hello world!"
+            - run: echo "Hello world!"              
 
     say-hello-inline-python:
         runs-on: ubuntu-24.04
@@ -17,9 +17,9 @@ jobs:
             - run: print("Hello world!")
               shell: python
 
-    # say-hello-action:
-    #     runs-on: ubuntu-24.04
-    #     steps:
-    #         - uses: actions/hello-world-javascript-action
-    #           with:
-    #               who-to-greet: "World"
+    say-hello-action:
+        runs-on: ubuntu-24.04
+        steps:
+            - uses: actions/hello-world-javascript-action@v1
+              with:
+                  who-to-greet: "World"
