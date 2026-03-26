@@ -16,18 +16,9 @@
     "@aws-sdk/client-s3": "^3.1017.0",
     "@job-service/shared": "*",
     "dotenv": "^17.3.1",
-    "mongoose": "^9.2.4",
-    "nodemailer": "^8.0.4",
-    "redis": "^5.11.0"
+    "nodemailer": "^8.0.4"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^25.3.5",
-    "@types/nodemailer": "^7.0.11",
-    "jest": "^30.2.0",
-    "rimraf": "^6.1.3",
-    "ts-jest": "^29.4.6",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "@types/nodemailer": "^7.0.11"
   }
 }

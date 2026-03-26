@@ -5,7 +5,7 @@ import morgan from "morgan";
 import jobsRouter from "./routes/jobs.route";
 import bodyParser from "body-parser";
 import config from "./config";
-import mongoose from "mongoose";
+import { connectToDb } from "@job-service/shared";
 import { redisClient } from "./shared/redis-cllient";
 
 const app = Express();
@@ -20,20 +20,10 @@ app.get("/health", (req, res) => {
 
 app.use("/jobs", jobsRouter);
 
-const connectToDb = async () => {
-  try {
-    await mongoose.connect(config.mongoUrl);
-    console.log("Database connected successfully");
-  } catch (error) {
-    console.error("Database connection error:", error);
-    process.exit(1);
-  }
-};
-
 app.listen(Number(config.serverPort), async () => {
   try {
     await redisClient.connect();
-    await connectToDb();
+    await connectToDb(config.mongoUrl);
 
     console.log("Successfully connected to redis");
 

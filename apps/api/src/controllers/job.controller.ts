@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { jobValidationSchema } from "../models/job";
 import { JobModel } from "../schemas/job.schema";
 import { Job } from "../interfaces/job.interface";
+import { redisClient } from "../shared/redis-cllient";
 
 export const createJob: RequestHandler<
   null,
@@ -16,6 +17,7 @@ export const createJob: RequestHandler<
     const newJob = new JobModel(value);
 
     await newJob.save();
+    await redisClient.lPush("job_queue", JSON.stringify({ jobId: newJob.id }));
 
     res.status(201).send({ jobId: newJob.id });
   } catch (error: any) {

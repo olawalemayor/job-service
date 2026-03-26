@@ -2,13 +2,15 @@ services:
   redis:
     image: redis:7.4-alpine
     restart: always
-  
+
   db:
     image: mongo:8.0.21-rc0-noble
     restart: always
 
   api:
-    build: ./apps/api
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
     ports:
       - "6500:6500"
     depends_on:
@@ -20,10 +22,16 @@ services:
       - MONGO_URL=mongodb://db:27017/job-service
 
   worker:
-    build: ./apps/worker 
+    build:
+      context: ..
+      dockerfile: apps/worker/Dockerfile
     depends_on:
       - redis
       - db
     environment:
       - REDIS_URL=redis://redis:6379
       - MONGO_URL=mongodb://db:27017/job-service
+      - S3_ENDPOINT=http://localstack:4566
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test

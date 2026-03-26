@@ -1,3 +1,4 @@
 export type { Job, JobType, JobStatus } from "./interfaces/job.interface";
-export { createJobSchema } from "./schemas/job.schema";
+export { JobModel } from "./schemas/job.schema";
 export { createRedisClient } from "./redis/client";
+export { connectToDb } from "./db/index";

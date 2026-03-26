@@ -2,24 +2,13 @@ import { JobModel } from "./schemas/job.schema";
 import { emailProcessor } from "./proccessors/email-processor";
 import { imageProccessor } from "./proccessors/image-proccessor";
 import { reportProccessor } from "./proccessors/report-proccessor";
-import { createRedisClient } from "@job-service/shared";
-import mongoose from "mongoose";
+import { createRedisClient, connectToDb } from "@job-service/shared";
 import "dotenv/config";
 import config from "./config";
 
 const QUEUE = "job_queue";
 
 const redisClient = createRedisClient(config.redisUrl);
-
-const connectToDb = async () => {
-  try {
-    await mongoose.connect(config.mongoUrl);
-    console.log("Database connected successfully");
-  } catch (error) {
-    console.error("Database connection error:", error);
-    process.exit(1);
-  }
-};
 
 async function recoverOrphanedJobs() {
   // Reset any jobs that were mid-processing when the worker last crashed
@@ -94,7 +83,7 @@ async function processJobs() {
 
 async function startWorker() {
   await redisClient.connect();
-  await connectToDb();
+  await connectToDb(config.mongoUrl);
   await recoverOrphanedJobs();
 
   console.log(
