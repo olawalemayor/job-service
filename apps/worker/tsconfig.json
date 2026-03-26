@@ -1,23 +1,14 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "lib": ["esnext"],
     "types": ["node", "jest"],
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "strict": true,
     "jsx": "react-jsx",
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    "noEmit": false
+    "paths": {
+      "@job-service/shared": ["../../packages/shared/src/index.ts"]
+    }
   },
+  "references": [{ "path": "../../packages/shared" }],
   "include": ["src", "tests"]
 }

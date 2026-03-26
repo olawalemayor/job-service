@@ -30,6 +30,14 @@ export const buildImageProcessor = (s3Client: S3Client) => {
   };
 };
 
-const s3Client = new S3Client({});
+const s3Client = new S3Client({
+  region: config.awsRegion,
+  endpoint: config.s3Endpoint,
+  forcePathStyle: true,
+  credentials: {
+    accessKeyId: config.awsAccessKeyId,
+    secretAccessKey: config.awsSecretAccessKey,
+  },
+});
 
 export const imageProccessor = buildImageProcessor(s3Client);

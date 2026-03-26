@@ -1,7 +1,12 @@
 export default {
   redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   mongoUrl: process.env.MONGO_URL || "mongodb://localhost:27017/job-service",
-  bucketName: process.env.AWS_BUCKET_NAME || "media_bucket",
+  bucketName: process.env.AWS_BUCKET_NAME || "media-bucket",
+  s3Endpoint: process.env.S3_ENDPOINT || "http://localhost:4566",
+  awsRegion: process.env.AWS_REGION || "us-east-1",
+  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID || "test",
+  awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "test",
+  workerConcurrency: process.env.WORKER_CONCURRENCY ? Number(process.env.WORKER_CONCURRENCY) : 5,
   mailHost: process.env.MAIL_HOST || "localhost",
   mailPort: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : 1025,
   mailUser: process.env.MAIL_USER || "user",

@@ -1,0 +1,19 @@
+{
+  "name": "job-service",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently --names api,worker --prefix-colors cyan,yellow \"npm run dev --workspace=apps/api\" \"npm run dev --workspace=apps/worker\"",
+    "build": "npm run build --workspace=packages/shared && npm run build --workspaces --if-present",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:worker": "npm run dev --workspace=apps/worker",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

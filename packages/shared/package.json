@@ -1,0 +1,25 @@
+{
+  "name": "@job-service/shared",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "mongoose": "^9.2.1",
+    "redis": "^5.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "rimraf": "^6.1.3",
+    "typescript": "^5.9.3"
+  }
+}

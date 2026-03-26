@@ -1,23 +1,8 @@
-import { model, Schema } from "mongoose";
-import { Job } from "../interfaces/job.interface";
+import { model } from "mongoose";
+import { createJobSchema } from "@job-service/shared";
 import { redisClient } from "../shared/redis-cllient";
 
-const jobSchema = new Schema<Job>(
-  {
-    type: {
-      type: String,
-      required: true,
-      enum: ["email", "report", "image-processing"],
-    },
-    payload: Schema.Types.Mixed,
-    status: {
-      type: String,
-      enum: ["pending", "running", "completed", "failed"],
-      default: "pending",
-    },
-  },
-  { timestamps: true },
-);
+const jobSchema = createJobSchema();
 
 jobSchema.pre("save", async function (next) {
   if (this.isNew) {

@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1017.0",
+    "@job-service/shared": "*",
     "dotenv": "^17.3.1",
     "mongoose": "^9.2.4",
     "nodemailer": "^8.0.4",

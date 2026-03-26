@@ -1,8 +1,6 @@
-import { createClient } from "redis";
+import { createRedisClient } from "@job-service/shared";
 import config from "../config";
 
-const redisClient = createClient({ url: config.redisUrl });
-
-redisClient.on("error", (err) => console.log("Redis Client Error", err));
+const redisClient = createRedisClient(config.redisUrl);
 
 export { redisClient };
