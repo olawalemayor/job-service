@@ -4,6 +4,7 @@ import { imageProccessor } from "./proccessors/image-proccessor";
 import { reportProccessor } from "./proccessors/report-proccessor";
 import { createClient } from "redis";
 import mongoose from "mongoose";
+import "dotenv/config";
 import config from "./config";
 
 const redisClient = createClient({ url: config.redisUrl });
