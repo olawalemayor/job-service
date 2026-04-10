@@ -1,170 +1,139 @@
 # 🚀 Job Service — Microservices Backend System
 
-A scalable, service-oriented backend system designed to manage job workflows using microservices architecture. Built with a focus on modularity, maintainability, and readiness for containerized deployment.
+A production-oriented microservices backend system for managing job workflows, featuring asynchronous processing, service orchestration, and containerized deployment using Docker.
 
 ---
 
-## 🧠 What This Project Solves
+## 🧠 Overview
 
-As applications grow, monolithic architectures become harder to scale and maintain.
+This project demonstrates how to build and run a scalable backend system using:
 
-This project demonstrates how to:
-
-- Break down a backend into independent services
-- Improve scalability through service isolation
-- Enable easier deployment and system evolution
-- Prepare systems for Docker and cloud-native environments
+- Microservices architecture
+- Background job processing (worker pattern)
+- Redis-based messaging
+- Containerized services with Docker Compose
 
 ---
 
-## 🏗️ Architecture Overview
+## 🏗️ Architecture
 
-This system is structured using a microservices approach:
-
-```
-Client → API Gateway → Job Service → Database
-                     → (Future Services)
+```text
+Client → API → Redis Queue → Worker → MongoDB
 ```
 
-### Core Components
+---
 
-- **API Gateway**
+## 🔄 How It Works
 
-  - Entry point for all incoming requests
-  - Handles routing to appropriate services
+1. Client sends request to API
+2. API validates and enqueues task (Redis)
+3. Worker consumes task asynchronously
+4. Worker processes and stores data in MongoDB
 
-- **Job Service**
-
-  - Core business logic for job-related operations
-  - Handles CRUD and domain-specific logic
-
-- **(Planned) Auth Service**
-
-  - Authentication and authorization
-
-- **(Planned) Config / Shared Services**
-
-  - Centralized configuration and shared utilities
+👉 This ensures non-blocking, scalable backend processing.
 
 ---
 
-## ⚙️ Tech Stack
+## ⚙️ Services
 
-- **Language:** TypeScript
-- **Runtime:** Node.js
-- **Architecture:** Microservices
-- **Communication:** REST APIs
-- **Version Control:** Git
+### **API (`apps/api`)**
+
+- Handles incoming HTTP requests
+- Publishes jobs to Redis queue
+
+---
+
+### **Worker (`apps/worker`)**
+
+- Processes background jobs
+- Consumes messages from Redis
+
+---
+
+### **Redis**
+
+- Acts as message broker / queue
+
+---
+
+### **MongoDB**
+
+- Stores application data
+
+---
+
+## 🐳 Running with Docker (Recommended)
+
+### Start all services
+
+```bash
+docker compose up --build
+```
+
+---
+
+### Services exposed
+
+- API → http://localhost:6500
+
+---
+
+### Environment variables (simplified)
+
+```env
+PORT=6500
+REDIS_URL=redis://redis:6379
+MONGO_URL=mongodb://db:27017/job-service
+```
+
+---
+
+## 🧪 Local Development (Without Docker)
+
+```bash
+npm install
+npm run dev
+```
 
 ---
 
 ## 📂 Project Structure
 
-```
-/apps/api
-/apps/worker
+```text
+/apps
+  ├── api
+  ├── worker
+/packages
+  ├── shared
 /infra
-/packages/shared
-```
-
-Each service is independently structured and can be developed or scaled separately.
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/olawalemayor/job-service.git
-cd job-service
 ```
 
 ---
 
-### 2. Install dependencies
+## ⚙️ Engineering Highlights
 
-Install dependencies for all services:
-
-```bash
-npm install
-```
-
----
-
-### 3. Environment setup
-
-Create a `.env` file in each service:
-
-```env
-PORT=3000
-REDIS_URL=your_redis_url
-MONGO_URL=your_database_url
-AWS_BUCKET_NAME=your_bucket_name
-```
-
-_(Adjust variables based on service requirements)_
+- **Asynchronous processing with Redis queue**
+- **Worker pattern for background jobs**
+- **Service isolation for scalability**
+- **Docker-based multi-service orchestration**
 
 ---
 
-### 4. Run the services
+## 🚧 Roadmap
 
-Start each service individually:
-
-```bash
-npm run dev
-
-# OR
-
-npm run dev:api
-npm run dev:worker
-```
+- Add Docker volumes for persistence
+- Introduce health checks
+- Kubernetes deployment (in progress)
+- CI/CD pipeline (GitHub Actions)
 
 ---
 
-## 📦 Current Status
-
-### ✅ Completed
-
-- Microservice structure and service separation
-- API Gateway routing
-- Core backend logic
-
-### 🚧 In Progress
-
-- Improved inter-service communication
-- Error handling and resilience
-- Logging and observability
-
-### 🔜 Planned
-
-- Docker containerization
-- Docker Compose orchestration
-- Kubernetes deployment
-- CI/CD pipeline integration
-
----
-
-## 🧪 Future DevOps Enhancements
-
-This project is being evolved toward production readiness:
-
-- Containerization using Docker
-- Multi-service orchestration with Docker Compose
-- Deployment to Kubernetes clusters
-- CI/CD automation using GitHub Actions
-- Environment-based configuration management
-
----
-
-## 🎯 Purpose
-
-This project showcases:
+## 🎯 What This Project Demonstrates
 
 - Backend system design
-- Microservices architecture
-- Scalable application structure
-- Readiness for modern deployment workflows
+- Microservices + worker architecture
+- Real-world service orchestration
+- Readiness for platform engineering workflows
 
 ---
 
@@ -180,4 +149,4 @@ Backend / Systems Engineer
 
 ## ⭐ Notes
 
-This project is part of my transition into platform engineering, focusing on building scalable systems and improving deployment workflows using modern tools like Docker, Kubernetes, and CI/CD pipelines.
+This project reflects practical experience in building distributed backend systems and is part of my transition into platform engineering, focusing on containerization, orchestration, and scalable system design.
