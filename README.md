@@ -1,71 +1,77 @@
-# 🚀 Job Microservice Architecture
+# 🚀 Job Service — Microservices Backend System
 
-A scalable microservices-based backend system for managing job workflows, designed with separation of concerns, service communication, and future-ready deployment in mind.
-
----
-
-## 🧠 Overview
-
-This project demonstrates how to design and structure a backend system using microservices principles. Each service is independently responsible for a specific domain, enabling better scalability, maintainability, and flexibility.
-
-The architecture is built to support:
-
-- Modular service development
-- Independent scaling of components
-- Clean API boundaries
-- Future containerization and cloud deployment
+A scalable, service-oriented backend system designed to manage job workflows using microservices architecture. Built with a focus on modularity, maintainability, and readiness for containerized deployment.
 
 ---
 
-## 🏗️ Architecture
+## 🧠 What This Project Solves
 
-The system is structured into multiple services:
+As applications grow, monolithic architectures become harder to scale and maintain.
 
-- **API Gateway** – Entry point for all client requests, responsible for routing
-- **Job Service** – Handles job-related operations and business logic
-- **Config Service** – Centralized configuration management
-- **(Optional/Planned)** Auth Service – Authentication & authorization
+This project demonstrates how to:
 
-Each service communicates via well-defined interfaces, ensuring loose coupling and easier extensibility.
+- Break down a backend into independent services
+- Improve scalability through service isolation
+- Enable easier deployment and system evolution
+- Prepare systems for Docker and cloud-native environments
+
+---
+
+## 🏗️ Architecture Overview
+
+This system is structured using a microservices approach:
+
+```
+Client → API Gateway → Job Service → Database
+                     → (Future Services)
+```
+
+### Core Components
+
+- **API Gateway**
+
+  - Entry point for all incoming requests
+  - Handles routing to appropriate services
+
+- **Job Service**
+
+  - Core business logic for job-related operations
+  - Handles CRUD and domain-specific logic
+
+- **(Planned) Auth Service**
+
+  - Authentication and authorization
+
+- **(Planned) Config / Shared Services**
+
+  - Centralized configuration and shared utilities
 
 ---
 
 ## ⚙️ Tech Stack
 
-- **Backend:** Node.js, TypeScript
+- **Language:** TypeScript
+- **Runtime:** Node.js
 - **Architecture:** Microservices
-- **Databases:** MongoDB
 - **Communication:** REST APIs
 - **Version Control:** Git
 
 ---
 
-## 🚧 Current Status
+## 📂 Project Structure
 
-This project is actively being developed and improved.
+```
+/apps/api
+/apps/worker
+/infra
+/packages/shared
+```
 
-### Completed:
-
-- Core microservice structure
-- API routing and service separation
-- Foundational backend logic
-
-### In Progress:
-
-- Improved service communication
-- Error handling and resilience
-- Logging and monitoring
-
-### Planned:
-
-- Docker containerization
-- Docker Compose setup for local development
-- Kubernetes deployment
-- CI/CD pipeline integration
+Each service is independently structured and can be developed or scaled separately.
 
 ---
 
-## 🛠️ Getting Started
+## 🚀 Getting Started
 
 ### 1. Clone the repository
 
@@ -78,7 +84,7 @@ cd job-service
 
 ### 2. Install dependencies
 
-For each service:
+Install dependencies for all services:
 
 ```bash
 npm install
@@ -86,25 +92,68 @@ npm install
 
 ---
 
-### 3. Run services
+### 3. Environment setup
+
+Create a `.env` file in each service:
+
+```env
+PORT=3000
+REDIS_URL=your_redis_url
+MONGO_URL=your_database_url
+AWS_BUCKET_NAME=your_bucket_name
+```
+
+_(Adjust variables based on service requirements)_
+
+---
+
+### 4. Run the services
 
 Start each service individually:
 
 ```bash
 npm run dev
+
+# OR
+
+npm run dev:api
+npm run dev:worker
 ```
 
 ---
 
-## 📦 Future Improvements (DevOps Focus)
+## 📦 Current Status
 
-This project is being evolved toward production-ready deployment:
+### ✅ Completed
+
+- Microservice structure and service separation
+- API Gateway routing
+- Core backend logic
+
+### 🚧 In Progress
+
+- Improved inter-service communication
+- Error handling and resilience
+- Logging and observability
+
+### 🔜 Planned
+
+- Docker containerization
+- Docker Compose orchestration
+- Kubernetes deployment
+- CI/CD pipeline integration
+
+---
+
+## 🧪 Future DevOps Enhancements
+
+This project is being evolved toward production readiness:
 
 - Containerization using Docker
 - Multi-service orchestration with Docker Compose
-- Deployment to Kubernetes
-- CI/CD pipeline with GitHub Actions
-- Environment-based configuration
+- Deployment to Kubernetes clusters
+- CI/CD automation using GitHub Actions
+- Environment-based configuration management
 
 ---
 
@@ -121,7 +170,7 @@ This project showcases:
 
 ## 👨‍💻 Author
 
-**Olawale Mayor**
+**Olawale Olufisoye**
 Backend / Systems Engineer
 
 - 🌐 https://olawalemayor.com
@@ -131,4 +180,4 @@ Backend / Systems Engineer
 
 ## ⭐ Notes
 
-This project is part of my journey toward building scalable systems and transitioning into platform engineering, with a focus on reliability, deployment, and system design.
+This project is part of my transition into platform engineering, focusing on building scalable systems and improving deployment workflows using modern tools like Docker, Kubernetes, and CI/CD pipelines.
