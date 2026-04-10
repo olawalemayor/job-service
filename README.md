@@ -1,17 +1,19 @@
 # 🚀 Job Service — Microservices Backend System
 
-A production-oriented microservices backend system for managing job workflows, featuring asynchronous processing, service orchestration, and containerized deployment using Docker.
+A microservices-based backend system for managing job workflows, featuring asynchronous processing, background workers, and S3-compatible storage integration.
 
 ---
 
 ## 🧠 Overview
 
-This project demonstrates how to build and run a scalable backend system using:
+This project demonstrates how to build a scalable backend system using:
 
 - Microservices architecture
 - Background job processing (worker pattern)
 - Redis-based messaging
-- Containerized services with Docker Compose
+- MongoDB for persistence
+- S3-compatible storage (via custom endpoint)
+- Docker Compose for local orchestration
 
 ---
 
@@ -19,81 +21,54 @@ This project demonstrates how to build and run a scalable backend system using:
 
 ```text
 Client → API → Redis Queue → Worker → MongoDB
+                               → S3 Storage
 ```
 
 ---
 
-## 🔄 How It Works
+## 🔄 Request Flow
 
 1. Client sends request to API
-2. API validates and enqueues task (Redis)
-3. Worker consumes task asynchronously
-4. Worker processes and stores data in MongoDB
-
-👉 This ensures non-blocking, scalable backend processing.
+2. API validates and queues task (Redis)
+3. Worker processes task asynchronously
+4. Data is stored in MongoDB and/or S3-compatible storage
 
 ---
 
 ## ⚙️ Services
 
-### **API (`apps/api`)**
+### **API (`/apps/api`)**
 
-- Handles incoming HTTP requests
-- Publishes jobs to Redis queue
+- Handles HTTP requests
+- Publishes jobs to Redis
+- Interacts with storage services
 
 ---
 
-### **Worker (`apps/worker`)**
+### **Worker (`/apps/worker`)**
 
 - Processes background jobs
-- Consumes messages from Redis
+- Consumes Redis queue
+- Handles storage operations
 
 ---
 
 ### **Redis**
 
-- Acts as message broker / queue
+- Message broker / queue
 
 ---
 
 ### **MongoDB**
 
-- Stores application data
+- Primary database
 
 ---
 
-## 🐳 Running with Docker (Recommended)
+### **S3-Compatible Storage**
 
-### Start all services
-
-```bash
-docker compose up --build
-```
-
----
-
-### Services exposed
-
-- API → http://localhost:6500
-
----
-
-### Environment variables (simplified)
-
-```env
-PORT=6500
-REDIS_URL=redis://redis:6379
-MONGO_URL=mongodb://db:27017/job-service
-```
-
----
-
-## 🧪 Local Development (Without Docker)
-
-```bash
-npm install
-npm run dev
-```
+- Uses custom endpoint (`S3_ENDPOINT`)
+- Supports local development via tools like Ministack or LocalStack
 
 ---
 
@@ -106,34 +81,50 @@ npm run dev
 /packages
   ├── shared
 /infra
+  ├── docker-compose.yml
+```
+
+---
+
+## 🐳 Running with Docker
+
+```bash
+cd infra
+docker compose up
+```
+
+---
+
+## ⚙️ Environment Variables
+
+```env
+PORT=6500
+REDIS_URL=redis://redis:6379
+MONGO_URL=mongodb://db:27017/job-service
+
+S3_ENDPOINT=http://localhost:4566
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=test
+AWS_SECRET_ACCESS_KEY=test
 ```
 
 ---
 
 ## ⚙️ Engineering Highlights
 
-- **Asynchronous processing with Redis queue**
-- **Worker pattern for background jobs**
-- **Service isolation for scalability**
-- **Docker-based multi-service orchestration**
-
----
-
-## 🚧 Roadmap
-
-- Add Docker volumes for persistence
-- Introduce health checks
-- Kubernetes deployment (in progress)
-- CI/CD pipeline (GitHub Actions)
+- Queue-based async processing (Redis)
+- Worker pattern for background jobs
+- S3-compatible storage abstraction
+- Multi-service orchestration using Docker
 
 ---
 
 ## 🎯 What This Project Demonstrates
 
-- Backend system design
-- Microservices + worker architecture
-- Real-world service orchestration
-- Readiness for platform engineering workflows
+- Microservices architecture
+- Background job processing
+- Integration with external storage systems
+- Practical containerized development setup
 
 ---
 
@@ -149,4 +140,4 @@ Backend / Systems Engineer
 
 ## ⭐ Notes
 
-This project reflects practical experience in building distributed backend systems and is part of my transition into platform engineering, focusing on containerization, orchestration, and scalable system design.
+This project reflects practical experience in building distributed backend systems and integrating infrastructure components such as queues and object storage, forming a foundation for platform engineering.
