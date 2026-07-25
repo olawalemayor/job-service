@@ -14,6 +14,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "noEmit": false
+    "noEmit": false,
+    "incremental": true
   }
 }

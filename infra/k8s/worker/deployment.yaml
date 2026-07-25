@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: job-service-worker
+  name: job-service-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: job-service-worker
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: job-service-worker
+    spec:
+      containers:
+        - image: job-service-worker:1.0
+          name: job-service-worker
+          envFrom:
+            - configMapRef:
+                name: job-service-worker-config
+            - secretRef:
+                name: job-service-worker-secret
+          resources: {}
+status: {}

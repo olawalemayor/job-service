@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ministack
+  name: ministack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ministack
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: ministack
+    spec:
+      containers:
+        - image: ministackorg/ministack
+          name: ministack
+          ports:
+            - containerPort: 4566
+          volumeMounts:
+            - name: ministack-data
+              mountPath: /var/lib/localstack
+          envFrom:
+            - secretRef:
+                name: ministack-secret
+            - configMapRef:
+                name: ministack-config
+          resources: {}
+      volumes:
+        - name: ministack-data
+          persistentVolumeClaim:
+            claimName: ministack-pvc
+status: {}

@@ -4,11 +4,9 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "types": ["node", "jest"],
-    "jsx": "react-jsx",
-    "paths": {
-      "@job-service/shared": ["../../packages/shared/src/index.ts"]
-    }
+    "jsx": "react-jsx",    
   },
   "references": [{ "path": "../../packages/shared" }],
-  "include": ["src", "tests"]
+  "include": ["src"],
+  "exclude": ["tests","**/*.spec.ts","**/*.test.ts"]
 }
