@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: job-service-worker-config
+data:
+  STORAGE_PROVIDER: local
+  S3_ENDPOINT: null
+  AWS_REGION: null
+  AWS_ACCESS_KEY_ID: null

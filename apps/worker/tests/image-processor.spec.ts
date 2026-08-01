@@ -1,76 +1,41 @@
-import {
-  S3Client,
-  ListBucketsCommand,
-  CreateBucketCommand,
-  PutObjectCommand,
-} from "@aws-sdk/client-s3";
 import config from "../src/config";
 import { buildImageProcessor } from "../src/proccessors/image-proccessor";
+import { StorageProvider } from "../src/storage/storage-provider.interface";
 
 describe("buildImageProcessor", () => {
-  let sendMock: jest.Mock;
-  let s3Client: S3Client;
+  let storageProvider: jest.Mocked<StorageProvider>;
 
   beforeEach(() => {
-    sendMock = jest.fn();
-    s3Client = { send: sendMock } as unknown as S3Client;
+    storageProvider = {
+      ensureBucketExists: jest.fn(),
+      upload: jest.fn(),
+    };
   });
 
-  it("uploads when bucket exists", async () => {
-    sendMock
-      .mockResolvedValueOnce({
-        Buckets: [{ Name: config.bucketName }],
-      })
-      .mockResolvedValueOnce({});
-
-    const processor = buildImageProcessor(s3Client);
+  it("ensures the bucket exists then uploads", async () => {
+    const processor = buildImageProcessor(storageProvider);
 
     await processor("path/file.png", "data-url");
 
-    expect(sendMock).toHaveBeenCalledWith(expect.any(ListBucketsCommand));
-
-    expect(sendMock).toHaveBeenCalledWith(expect.any(PutObjectCommand));
-
-    expect(sendMock).not.toHaveBeenCalledWith(expect.any(CreateBucketCommand));
+    expect(storageProvider.ensureBucketExists).toHaveBeenCalledWith(
+      config.bucketName,
+    );
+    expect(storageProvider.upload).toHaveBeenCalledWith(
+      config.bucketName,
+      "path/file.png",
+      "data-url",
+    );
   });
 
-  it("creates bucket if it does not exist", async () => {
-    sendMock
-      .mockResolvedValueOnce({ Buckets: [] })
-      .mockResolvedValueOnce({})
-      .mockResolvedValueOnce({});
+  it("throws when the storage provider fails", async () => {
+    storageProvider.ensureBucketExists.mockRejectedValue(
+      new Error("storage error"),
+    );
 
-    const processor = buildImageProcessor(s3Client);
-
-    await processor("path/file.png", "data-url");
-
-    expect(sendMock).toHaveBeenCalledWith(expect.any(CreateBucketCommand));
-
-    expect(sendMock).toHaveBeenCalledWith(expect.any(PutObjectCommand));
-  });
-
-  it("creates bucket when buckets is undefined", async () => {
-    sendMock
-      .mockResolvedValueOnce({})
-      .mockResolvedValueOnce({})
-      .mockResolvedValueOnce({});
-
-    const processor = buildImageProcessor(s3Client);
-
-    await processor("path/file.png", "data-url");
-
-    expect(sendMock).toHaveBeenCalledWith(expect.any(CreateBucketCommand));
-
-    expect(sendMock).toHaveBeenCalledWith(expect.any(PutObjectCommand));
-  });
-
-  it("throws error when S3 fails", async () => {
-    sendMock.mockRejectedValue(new Error("S3 error"));
-
-    const processor = buildImageProcessor(s3Client);
+    const processor = buildImageProcessor(storageProvider);
 
     await expect(processor("path/file.png", "data-url")).rejects.toThrow(
-      "S3 error",
+      "storage error",
     );
   });
 });

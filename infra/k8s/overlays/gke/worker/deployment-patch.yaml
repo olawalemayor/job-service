@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-service-worker
+spec:
+  template:
+    spec:
+      containers:
+        - name: job-service-worker
+          image: us-east1-docker.pkg.dev/job-service-504018/job-service/worker:v1
+          volumeMounts:
+            - name: gcs-key
+              mountPath: /var/secrets/gcs
+              readOnly: true
+      volumes:
+        - name: gcs-key
+          secret:
+            secretName: job-service-worker-secret
+            items:
+              - key: key.json
+                path: key.json

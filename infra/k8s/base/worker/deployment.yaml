@@ -24,4 +24,17 @@ spec:
             - secretRef:
                 name: job-service-worker-secret
           resources: {}
+          # Uncomment once job-service-worker-secret has a `key.json` entry
+          # (the GCP service account key) to mount it at GCS_KEY_FILE.
+          # volumeMounts:
+          #   - name: gcs-key
+          #     mountPath: /var/secrets/gcs
+          #     readOnly: true
+      # volumes:
+      #   - name: gcs-key
+      #     secret:
+      #       secretName: job-service-worker-secret
+      #       items:
+      #         - key: key.json
+      #           path: key.json
 status: {}

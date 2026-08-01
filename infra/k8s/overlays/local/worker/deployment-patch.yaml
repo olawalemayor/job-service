@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-service-worker
+spec:
+  # Pinned to 1: the storage PVC is ReadWriteOnce, so it can only be
+  # mounted by pods scheduled on a single node at a time.
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: job-service-worker
+          volumeMounts:
+            # Matches the default LOCAL_STORAGE_PATH ("./storage") resolved
+            # against the container's /app working directory.
+            - name: storage
+              mountPath: /app/storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: job-service-worker-storage

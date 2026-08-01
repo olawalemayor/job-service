@@ -5,6 +5,7 @@ metadata:
 data:
   REDIS_URL: redis://redis:6379
   MONGO_URL: mongodb://mongodb:27017/job-service
+  STORAGE_PROVIDER: s3
   S3_ENDPOINT: ministack
   AWS_REGION: us-east-1
   AWS_ACCESS_KEY_ID: test

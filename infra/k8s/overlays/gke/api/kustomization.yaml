@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+patches:
+  - target:
+      kind: Deployment
+      name: job-service-api
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: us-east1-docker.pkg.dev/job-service-504018/job-service/api:v1
+
+  - target:
+      kind: Service
+      name: job-service-api
+    patch: |-
+      - op: add
+        path: /spec/type
+        value: LoadBalancer
+
+  # No nginx ingress controller / job-service.test host on GKE — the
+  # LoadBalancer Service above is the entry point instead.
+  - target:
+      kind: Ingress
+      name: job-service-api
+    patch: |-
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: job-service-api

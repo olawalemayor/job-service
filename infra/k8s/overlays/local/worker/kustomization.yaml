@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - pvc.yaml
+
+patches:
+  - target:
+      kind: ConfigMap
+      name: job-service-worker-config
+    path: configmap-patch.yaml
+  - target:
+      kind: Secret
+      name: job-service-worker-secret
+    path: secret-patch.yaml
+  - target:
+      kind: Deployment
+      name: job-service-worker
+    path: deployment-patch.yaml
