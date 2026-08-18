@@ -1,3 +1,4 @@
 node_modules/
 .env**
 infra/k8s/overlays/**/key.json
+.DS_Store
