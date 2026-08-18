@@ -1,0 +1,7 @@
+images:
+  api:      
+    repository: us-east1-docker.pkg.dev/job-service-504018/job-service/api      
+    tag: v1
+  worker:      
+    repository: us-east1-docker.pkg.dev/job-service-504018/job-service/worker
+    tag: v1  

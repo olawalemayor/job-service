@@ -18,15 +18,7 @@ spec:
     spec:
       containers:
         - name: {{ .name }}
-          {{- with $.Values.images }}            
-          {{- if eq $.Values.cloudProvider "gcp"}}
-          image: {{ .gcp.api.repository }}:{{ .gcp.api.tag }}            
-          {{- else if eq $.Values.cloudProvider "aws" }}
-          image: {{ .aws.api.repository }}:{{ .aws.api.tag }}                        
-          {{- else }}
-          image: {{ .local.api.repository }}:{{ .local.api.tag }}                                    
-          {{- end }}
-          {{- end }}
+          images: {{ $.Values.images.api.repository }}:{{ $.Values.images.api.tag }}          
           envFrom:
             - configMapRef:
                 name: {{ .name }}-config

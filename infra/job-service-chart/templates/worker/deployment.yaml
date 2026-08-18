@@ -19,16 +19,14 @@ spec:
       containers:
         - name: {{ .name }}
           {{- with $.Values.images }}            
+          image: {{ .worker.repository }}:{{ .worker.tag }}  
           {{- if eq $.Values.cloudProvider "gcp" }}
-          image: {{ .gcp.worker.repository }}:{{ .gcp.worker.tag }}  
           volumeMounts:
             - name: gcs-key
               mountPath: /var/secrets/gcs
               readOnly: true          
           {{- else if eq $.Values.cloudProvider "aws" }}
-          image: {{ .aws.worker.repository }}:{{ .aws.worker.tag }}                        
           {{- else }}
-          image: {{ .local.worker.repository }}:{{ .local.worker.tag }}   
           volumeMounts:
             - name: storage
               mountPath: /app/storage                                 

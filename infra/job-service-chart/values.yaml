@@ -32,24 +32,9 @@ mongoDBService:
   replicas: 1
 
 images:
-  gcp:
-    api:      
-      repository: us-east1-docker.pkg.dev/job-service-504018/job-service/api
-      tag: v1
-    worker:      
-      repository: us-east1-docker.pkg.dev/job-service-504018/job-service/worker
-      tag: v1  
-  aws:
-    api:      
-      repository: job-service-api
-      tag: 1.0
-    worker:      
-      repository: job-service-worker
-      tag: 1.0  
-  local:
-    api:      
-      repository: job-service-api
-      tag: 1.0
-    worker:      
-      repository: job-service-worker
-      tag: 1.0  
+  api:      
+    repository: job-service-api
+    tag: 1.0
+  worker:      
+    repository: job-service-worker
+    tag: 1.0  
