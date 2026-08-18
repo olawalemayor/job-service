@@ -1,15 +1,28 @@
-cloudProvider: "gcp"
-
 apiService:
   name: job-service-api  
   replicas: 2
   servicePort: 6500
+  loadBalancer: false
+  ingress:
+    enabled: false
+  secret:
+    enabled: false
+  envFrom:
+    - configMapRef:
+        name: job-service-api-config    
 
 workerService:
   name: job-service-worker
-  replicas: 2
-  #   --set-file workerService.gcsKeyJson=path/to/key.json
-  gcsKeyJson: ""
+  replicas: 2 
+  envFrom:
+    - configMapRef:
+        name: job-service-worker-config
+  config:
+    STORAGE_PROVIDER: 
+  pvcProvisioned: false
+  secret:
+    enabled: false
+    data:
 
 redisService:
   name: redis

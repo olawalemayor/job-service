@@ -5,3 +5,31 @@ images:
   worker:      
     repository: job-service-worker
     tag: 1.0  
+
+workerService:
+  secret:
+    enabled: true
+    data: 
+      AWS_SECRET_ACCESS_KEY: test
+  envFrom:
+    - configMapRef:
+        name: job-service-worker-config
+    - secretRef:
+        name: job-service-worker-secret
+          
+  config:
+    STORAGE_PROVIDER: s3
+    S3_ENDPOINT: "https://s3.us-east-1.amazonaws.com"
+    AWS_REGION: us-east-1
+    AWS_ACCESS_KEY_ID: test
+
+apiService:
+  secret:
+    enabled: true
+  ingress:
+    enabled: true
+  envFrom:
+    - configMapRef:
+        name: job-service-api-config
+    - secretRef:
+        name: job-service-api-secret    

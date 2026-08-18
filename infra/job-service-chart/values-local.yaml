@@ -5,3 +5,22 @@ images:
   worker:      
     repository: job-service-worker
     tag: 1.0  
+
+workerService:
+  replicas: 1
+  pvcProvisioned: true
+  volumeMounts:
+    - name: storage
+      mountPath: /app/storage
+  
+  volumes:
+    - name: storage
+      persistentVolumeClaim:
+        claimName: job-service-worker-storage
+
+  config:
+    STORAGE_PROVIDER: local
+
+apiService:
+  ingress:
+    enabled: true

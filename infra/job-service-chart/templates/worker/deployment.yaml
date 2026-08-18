@@ -20,39 +20,17 @@ spec:
         - name: {{ .name }}
           {{- with $.Values.images }}            
           image: {{ .worker.repository }}:{{ .worker.tag }}  
-          {{- if eq $.Values.cloudProvider "gcp" }}
-          volumeMounts:
-            - name: gcs-key
-              mountPath: /var/secrets/gcs
-              readOnly: true          
-          {{- else if eq $.Values.cloudProvider "aws" }}
-          {{- else }}
-          volumeMounts:
-            - name: storage
-              mountPath: /app/storage                                 
           {{- end }}
-          {{- end }}
+          {{- with .volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}          
           envFrom:
-            - configMapRef:
-                name: {{ .name }}-config
-            {{- if eq $.Values.cloudProvider "aws" }}
-            - secretRef:
-                name: {{ .name }}-secret
-            {{- end }}
+            {{- toYaml .envFrom | nindent 12 }}            
           resources: {}
-      {{- if eq $.Values.cloudProvider "gcp" }}  
+      {{- with .volumes }}
       volumes:
-        - name: gcs-key
-          secret:
-            secretName: {{.name}}-secret
-            items:
-              - key: key.json
-                path: key.json              
-      {{- else if eq $.Values.cloudProvider "local" }}
-      volumes:
-        - name: storage
-          persistentVolumeClaim:
-            claimName: {{ .name }}-storage
-      {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}      
 status: {}
 {{- end }}

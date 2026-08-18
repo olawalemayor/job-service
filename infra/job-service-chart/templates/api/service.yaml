@@ -6,7 +6,7 @@ metadata:
     app: {{ .name }}
   name: {{ .name }}
 spec:
-  {{- if eq $.Values.cloudProvider "gcp"}}
+  {{- if .loadBalancer}}
   type: LoadBalancer
   {{- end }}
   ports:

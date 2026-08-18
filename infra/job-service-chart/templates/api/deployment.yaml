@@ -18,14 +18,9 @@ spec:
     spec:
       containers:
         - name: {{ .name }}
-          images: {{ $.Values.images.api.repository }}:{{ $.Values.images.api.tag }}          
+          image: {{ $.Values.images.api.repository }}:{{ $.Values.images.api.tag }}          
           envFrom:
-            - configMapRef:
-                name: {{ .name }}-config
-            {{- if eq $.Values.cloudProvider "aws"}}
-            - secretRef:
-                name: {{ .name }}-secret
-            {{- end}}
+            {{ toYaml .envFrom | nindent 12}}
           resources: {}      
 status: {}
 {{- end }}

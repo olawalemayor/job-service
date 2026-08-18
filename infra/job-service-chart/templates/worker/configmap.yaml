@@ -4,15 +4,6 @@ metadata:
   name: {{ .Values.workerService.name }}-config
 data:
   {{- include "connection" $  | indent 2}}
-  {{- if eq .Values.cloudProvider "aws" }}
-  STORAGE_PROVIDER: s3
-  S3_ENDPOINT: "https://s3.us-east-1.amazonaws.com"
-  AWS_REGION: us-east-1
-  AWS_ACCESS_KEY_ID: test
-  {{- else if eq .Values.cloudProvider "gcp" }}
-  STORAGE_PROVIDER: gcs
-  GCS_PROJECT_ID: "job-service-504018"
-  GCS_KEY_FILE: "/var/secrets/gcs/key.json"  
-  {{- else }}
-  STORAGE_PROVIDER: local
+  {{- with .Values.workerService.config -}}
+    {{ toYaml . | nindent 2}}
   {{- end }}

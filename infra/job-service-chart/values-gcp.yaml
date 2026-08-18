@@ -5,3 +5,30 @@ images:
   worker:      
     repository: us-east1-docker.pkg.dev/job-service-504018/job-service/worker
     tag: v1  
+
+workerService:
+  secret:
+    enabled: true
+      # gcsKeyJson
+    data:
+      key.json: ""
+  volumeMounts:
+    - name: gcs-key
+      mountPath: /var/secrets/gcs
+      readOnly: true
+
+  volumes:
+    - name: gcs-key
+      secret:
+        secretName: job-service-worker-secret
+        items:
+          - key: key.json
+            path: key.json
+
+  config:
+    STORAGE_PROVIDER: gcs
+    GCS_PROJECT_ID: "job-service-504018"
+    GCS_KEY_FILE: "/var/secrets/gcs/key.json" 
+
+apiService:
+  loadBalancer: true
