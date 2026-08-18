@@ -6,17 +6,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- range $key, $val := .selectorLabels }}
-      {{ $key }}: {{ $val }}
-      {{ end -}}          
+      app: {{ .name }}
+      component: database  
   serviceName: "mongodb"
   replicas: 1
   template:
     metadata:
       labels:
-        {{- range $key, $val := .selectorLabels }}
-        {{ $key }}: {{ $val }}
-        {{ end -}}            
+        app: {{ .name }}
+        component: database           
     spec:
       terminationGracePeriodSeconds: 10
       containers:

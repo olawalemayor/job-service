@@ -17,10 +17,7 @@ redisService:
   redisPort: 6379
 
 mongoDBService:
-  name: mongodb
-  selectorLabels: 
-    app: mongodb
-    component: database  
+  name: mongodb  
   databasePort: 27017
   dbName: job-service
   replicas: 1
