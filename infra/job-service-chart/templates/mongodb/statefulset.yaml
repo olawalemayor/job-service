@@ -21,7 +21,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: mongodb
-          image: {{ .image.repository }}:{{ .image.tag }}
+          image: {{ $.Values.images.mongodb.repository }}:{{ $.Values.images.mongodb.tag }}
           ports:
             - containerPort: {{ .databasePort}}
               name: mongo-server

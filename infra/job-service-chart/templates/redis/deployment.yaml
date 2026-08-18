@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: {{ .image.repository }}:{{ .image.tag }}
+          image: {{ $.Values.images.redis.repository }}:{{ $.Values.images.redis.tag }}
           resources:
             limits:
               memory: "128Mi"
