@@ -1,0 +1,20 @@
+{{- with .Values.apiService }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .name }}
+  name: {{ .name }}
+spec:
+  {{- if eq $.Values.cloudProvider "gcp"}}
+  type: LoadBalancer
+  {{- end }}
+  ports:
+    - port: {{ .servicePort}}
+      protocol: TCP
+      targetPort: {{ .servicePort}}
+  selector:
+    app: {{ .name }}
+status:
+  loadBalancer: {}
+{{- end -}}

@@ -1,0 +1,21 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource
+{{- if ne .Values.cloudProvider "gcp" -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.apiService.name }}
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: job-service.test
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.apiService.name }}
+                port:
+                  number: {{ .Values.apiService.servicePort}}
+{{- end -}}

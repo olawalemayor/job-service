@@ -1,0 +1,39 @@
+{{- with .Values.apiService }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{.name}}
+  name: {{ $.Release.Name }}-{{.name}}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{.name}}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{.name}}
+    spec:
+      containers:
+        - name: {{ .name }}
+          {{- with $.Values.images }}            
+          {{- if eq $.Values.cloudProvider "gcp"}}
+          image: {{ .gcp.api.repository }}:{{ .gcp.api.tag }}            
+          {{- else if eq $.Values.cloudProvider "aws" }}
+          image: {{ .aws.api.repository }}:{{ .aws.api.tag }}                        
+          {{- else }}
+          image: {{ .local.api.repository }}:{{ .local.api.tag }}                                    
+          {{- end }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ .name }}-config
+            {{- if eq $.Values.cloudProvider "aws"}}
+            - secretRef:
+                name: {{ .name }}-secret
+            {{- end}}
+          resources: {}      
+status: {}
+{{- end }}

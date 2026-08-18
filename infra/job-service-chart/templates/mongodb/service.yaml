@@ -1,0 +1,20 @@
+{{- with .Values.mongoDBService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+  namespace: default
+spec:
+  selector:
+    app: {{ .name }}
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: mongodb
+      protocol: TCP
+      port: {{ .databasePort }}
+      targetPort: {{ .databasePort }}
+{{- end -}}

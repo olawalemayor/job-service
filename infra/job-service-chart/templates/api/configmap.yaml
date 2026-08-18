@@ -1,0 +1,9 @@
+{{- with .Values.apiService }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .name }}-config
+data:
+  PORT: {{ .servicePort | quote}}
+  {{- include "connection" $  | indent 2}}
+{{- end -}}

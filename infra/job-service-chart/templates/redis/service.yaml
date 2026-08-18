@@ -1,0 +1,16 @@
+{{- with .Values.redisService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+  namespace: default
+spec:
+  selector:
+    app: {{ .name }}
+  type: ClusterIP
+  ports:
+    - name: redis
+      protocol: TCP
+      port: {{ .redisPort }}
+      targetPort: {{ .redisPort }}
+{{- end -}}

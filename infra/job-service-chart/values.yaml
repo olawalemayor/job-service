@@ -1,0 +1,55 @@
+cloudProvider: "gcp"
+
+apiService:
+  name: job-service-api  
+  replicas: 2
+  servicePort: 6500
+
+workerService:
+  name: job-service-worker
+  replicas: 2
+  #   --set-file workerService.gcsKeyJson=path/to/key.json
+  gcsKeyJson: ""
+
+redisService:
+  name: redis
+  replicas: 1
+  image:
+    repository: redis
+    tag: 7.4-alpine
+  redisPort: 6379
+
+mongoDBService:
+  name: mongodb
+  selectorLabels: 
+    app: mongodb
+    component: database
+  image:
+    repository: mongo
+    tag: 8.0.13
+  databasePort: 27017
+  dbName: job-service
+  replicas: 1
+
+images:
+  gcp:
+    api:      
+      repository: us-east1-docker.pkg.dev/job-service-504018/job-service/api
+      tag: v1
+    worker:      
+      repository: us-east1-docker.pkg.dev/job-service-504018/job-service/worker
+      tag: v1  
+  aws:
+    api:      
+      repository: job-service-api
+      tag: 1.0
+    worker:      
+      repository: job-service-worker
+      tag: 1.0  
+  local:
+    api:      
+      repository: job-service-api
+      tag: 1.0
+    worker:      
+      repository: job-service-worker
+      tag: 1.0  

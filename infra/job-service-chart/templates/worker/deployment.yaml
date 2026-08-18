@@ -1,0 +1,60 @@
+{{- with .Values.workerService }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .name }}
+  name: {{ $.Release.Name }}-{{ .name }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+        - name: {{ .name }}
+          {{- with $.Values.images }}            
+          {{- if eq $.Values.cloudProvider "gcp" }}
+          image: {{ .gcp.worker.repository }}:{{ .gcp.worker.tag }}  
+          volumeMounts:
+            - name: gcs-key
+              mountPath: /var/secrets/gcs
+              readOnly: true          
+          {{- else if eq $.Values.cloudProvider "aws" }}
+          image: {{ .aws.worker.repository }}:{{ .aws.worker.tag }}                        
+          {{- else }}
+          image: {{ .local.worker.repository }}:{{ .local.worker.tag }}   
+          volumeMounts:
+            - name: storage
+              mountPath: /app/storage                                 
+          {{- end }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ .name }}-config
+            {{- if eq $.Values.cloudProvider "aws" }}
+            - secretRef:
+                name: {{ .name }}-secret
+            {{- end }}
+          resources: {}
+      {{- if eq $.Values.cloudProvider "gcp" }}  
+      volumes:
+        - name: gcs-key
+          secret:
+            secretName: {{.name}}-secret
+            items:
+              - key: key.json
+                path: key.json              
+      {{- else if eq $.Values.cloudProvider "local" }}
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ .name }}-storage
+      {{- end }}
+status: {}
+{{- end }}
