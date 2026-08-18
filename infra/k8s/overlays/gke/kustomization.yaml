@@ -1,6 +1,0 @@
-resources:
-  - ../../base
-
-components:
-  - worker
-  - api
